@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <style>
+        body{
+            color: lightblue;
+            background-color:/* #045FB4*/#084B8A;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        }
+        .loginpage{
+
+        }
+        .logintag{
+            color: lightblue;
+            margin: 0 auto;
+            width: 60%;
+            border: 3px solid lightblue;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .logininput{
+            width: 100%;
+            height: 20px;
+            margin: 10px 0;
+            background-color: #045FB4;
+            border-width: 2px;
+            border-radius: 10px;
+            border-color: lightblue;
+            color: lightblue;
+        }
+
+        .loginbutton{
+            background-color: #045FB4;
+            color: lightblue;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            font-size: 20px;
+            width: 100%;
+            margin: 5px auto;
+            padding: 5px;
+            border-width: 2px;
+            border-radius: 10px;
+            border-color: lightblue;
+        }
+
+        .createac{
+            margin: 15px auto;
+            text-align: center;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            color: lightblue;
+        }
+
+        .button {
+          margin: 10px 0;
+          display: inline-block;
+          padding: 15px 25px;
+          font-size: 24px;
+          cursor: pointer;
+          text-align: center;
+          text-decoration: none;
+          outline: none;
+          color: #fff;
+          background-color: #4CAF50;
+          border: none;
+          border-radius: 15px;
+          box-shadow: 0 9px #999;
+          width: 300px;
+        }
+
+        .button:hover {background-color: #3e8e41}
+
+        .button:active {
+          background-color: #3e8e41;
+          box-shadow: 0 5px #666;
+          transform: translateY(4px);
+        }
+
+        .goback{
+            /*height: 100%;*/
+            position: fixed;
+            top: 0; left: 0;
+        }
+
+        .gobackbutton{
+            /*height: 100%;*/
+            border-width: 3px;
+            border-color: lightblue;
+            border-radius: 10px;
+            background-color: #045FB4;
+            color: lightblue;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            font-size: 32px;
+        }
+
+        #button1{
+            background-color: #2E9AFE;
+            color: #CEE3F6;
+        }
+
+        #button2{
+            background-color: #0080FF;
+            color: #CEE3F6;
+        }
+
+        #button3{
+            background-color: #0174DF;
+            color: #CEE3F6;
+        }
+
+        #button4{
+            background-color: #045FB4;
+            color: #CEE3F6;
+        }
+
+        #menu{
+            display: flex;
+            justify-content: center;
+        }
+
+        #loginword{
+            color: #A9E2F3;
+            text-align: center;
+        }
+
+        #createacarea{
+            color: lightblue;
+        }
+
+        #datainputchoose{
+            font-size: 20px;
+            color: lightblue;
+        }
+
+        #inputtips{
+            /*padding: 10px 50px;*/
+            color: lightblue;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        #notificationbar{
+            color: black;
+            background-color: lightblue;
+            opacity: 0.3;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        #back{
+            top:0;
+            left: 0;
+            font-size: 40px;
+            position: fixed;
+            opacity: 0.2;
+            background-color: white;
+            color: black;
+            border-radius: 30px;
+        }
+
+        #next{
+            top: 0;
+            right: 0;
+            font-size: 40px;
+            position: fixed;;
+            opacity: 0.2;
+            background-color: white;
+            color: black;
+            border-radius: 30px;
+        }
+
+        hr{
+            height: 20px;
+            border-style: solid;
+            border-color: lightblue;
+            border-radius: 40px;
+            opacity: 0.3;
+        }
+
+    </style>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no"> -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
+        <title>save water</title>
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-functions.js"></script> -->
+        <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+        <!-- <script src="https://www.gstatic.com/firebasejs/live/3.1/firebase.js"></script> -->
+        <script src="js/easytimer.min.js"></script>
+        
+    </head>
+
+    <body>
+        <div id="back" style="display: none;" onclick="backpage()"><-</div>
+        <div id="next" style="display: none;" onclick="nextpage()">-></div>
+        <div id="notificationbar" style="display: none;"></div>
+        <div id="menu" class="app">
+            
+            <div id="deviceready" class="blink">
+             <div style="display: none" id="loginpage" class="loginpage">
+                <h1 id="loginword">LOGIN</h1>
+                <div class="logintag">
+                User Email:
+                <input id="inputuserid" class="logininput" type="text">
+                <br><br>
+                Password:
+                <input id="inputpw" class="logininput" type="password"><br><br>
+                <button onclick="userlogin()" class="loginbutton">login</button>
+
+                </div>
+                <div onclick="createnewac()" class="createac">Create new account</div>
+             </div>
+
+             <div id="createacarea" style="display: none">
+                <!-- <div class="goback"><button class="gobackbutton"><b><</b></button></div> -->
+                <h1 style="text-align: center;">New Account</h1>
+                Your Email:
+                <input id="createuserid" class="logininput" type="text">
+                <br><br>
+                Your Name:
+                <input id="createusername" class="logininput" type="text">
+                <br><br>
+                Password:
+                <input id="createpw" class="logininput" type="password"><br><br>
+                Retype-Password:
+                <input id="createpw2" class="logininput" type="password"><br><br>
+                <button onclick="createback()" class="loginbutton" style=" right: 0; width: 49%;">back</button>
+                <button onclick="createnext()" class="loginbutton" style=" left: 0; width: 49%;">next</button>
+             </div>
+
+             <div style="display: none;" id="startwatertapearea">
+                
+                <div id="datainputchoose" style="padding: 0px 20px;">
+                    <h1 style="text-align: center; color: lightblue;">Choose Data Source</h1>
+                    <br>
+                    <div onclick="startinputmanually()">-> Input manually</div><br>
+                    <div onclick="alert('Sorry, service not ready yet.');">-> Connect to smart water mark</div>
+                    <br><br>
+                </div>
+
+                <div id="datainputmain" style="display: none; padding:10px 50px; text-align: center;">
+                    <h1 style="text-align: center; color: lightblue;">Shower Head Data</h1>
+                    <hr style="border-width: 0 0 10px 0;"><br>
+                    <div id="tapearea"></div>
+                    <button onclick="addnewtape()" style="width: 50px; border-radius: 50px;" class="loginbutton">+</button>
+                    <br>
+                    <br>
+                    <hr style="border-width: 10px 0 0 0;">
+                    <br>
+                    <button onclick="nextpage()" id="addtapedonebutton" style="display: none; width: 70%;" class="loginbutton">Done</button>
+                </div>
+
+                <div id="inputtips" style="display: none;">
+                    <h1 style="text-align: center; color: lightblue;">Tips</h1>
+                    1.<br><br><img src="img/ShowerHead.png" alt="The Pulpit Rock" width="304" height="228"><br>
+                    Get your shower head ready.<br><hr style="border-width: 10px 0 0 0;"><br>
+                    2.<br><br><img src="img/Beaker.png" alt="The Pulpit Rock" width="304" height="228"><br>
+                    Prepare a beaker or a container of known volume, <br><hr style="border-width: 10px 0 0 0;"><br>
+                    3.<br><br><img src="img/Timer.png" alt="The Pulpit Rock" width="304" height="228"><br>
+                    Prepare your timer or use the internal timer we provided (next page).<br><hr style="border-width: 10px 0 0 0;"><br>
+                    4.<br><br><img src="img/All.png" alt="The Pulpit Rock" width="304" height="228"><br>
+                    Turn on the shower head at maximum water flow. Start the timer while collecting water. Make sure water does not spill out.<br><hr style="border-width: 10px 0 0 0;"><br>
+                    <br><br>
+                    <button onclick="nextpage()" class="loginbutton">Record it</button>
+                </div>
+
+                <div id="calculationarea" class="logintag" style="border-width: 0;display: none;">
+                    <div class="logintag">
+                        <div class="logintag" id="timerarea"></div><br>
+                        <button onclick="starttimernow()" style="width: 46%" class="loginbutton">start</button>
+                        <button onclick="stoptimernow()" style="width: 46%" class="loginbutton">stop</button>
+                    </div>
+                    <br>
+                    <br>
+                    Time: (s)
+                    <input id="calctime" type="text" class="logininput">
+                    Water: (ml)
+                    <input id="calcwater" type="text" class="logininput"> 
+                    <br><br>
+                    <button onclick="calculatespeed()" class="loginbutton">Calculate</button>
+                </div>
+             </div>
+
+
+
+             <div id="tempaddtape" style="display: none;" class="logintag">
+                Shower head name:
+                <input id="createuserid" class="logininput" type="text">
+                <br><br>
+                Water output speed (L/mins):
+                <input id="createusername" class="logininput" type="text">
+                <br> <i onclick="showtips(this)" style="font-size: 15px;">?? I don't know the speed</i>
+                <br><br>
+                <button onclick="deletetape(this)" style="font-size: 10px; width: 30px; border-radius: 50px;" class="loginbutton">x</button>
+            </div>
+
+            <div id="appmain" style="display: none;">
+                
+                <div id="appmenu"style="text-align: center;">
+                <h1 style="text-align: center; font-size: 40px; text-shadow: 4px 4px grey;">Water Monitoring</h1>
+                <button id="button1" onclick="startmyprofile()" class="button">My Profile</button><br><br>
+                <button id="button2" onclick="startmyusage()" class="button">My Water Usage</button><br><br>
+                <button id="button3" onclick="startrankingtable()" class="button">Ranking Table</button><br><br>
+                <button id="button4" onclick="userlogout()" class="button">Logout</button><br><br>
+                </div>
+
+                <div id="myprofilearea" style="display: none;">
+                    <div id="generaldata">
+                    <button onclick="gohome()" class="loginbutton" style="position: fixed; top: 0; left: 0; opacity: 0.5; width: 40px;">&#9776;</button>
+                    <h1 style="text-align: center">My Profile</h1>
+                    <hr style="border-width: 10px 0 0 0;">
+                    My name:
+                    <input disabled type="text" class="logininput" id="fillmyname"> <br>
+                    My email:
+                    <input disabled type="text" class="logininput" id="fillmyemail"><br>
+                    <br>
+                    <div style="text-align: center; font-size: 13px;">
+                    <i>Change password</i>
+                    </div>
+                    <hr style="border-width: 0 0 10px 0;">
+                    <!-- <h3 style="text-align: center; opacity: 0.8;">Shower head data:</h3>
+
+                    <hr style="border-width: 10px 0 0 0;">
+                    <hr style="border-width: 0 0 10px 0;"> -->
+
+                    </div>
+                </div>
+
+                <div id="myusagearea" style="display: none;">
+                    <br>
+                    <h1 style="text-align: center;">Choose Shower Head</h1>
+                    <button onclick="gohome()" class="loginbutton" style="position: fixed; top: 0; left: 0; opacity: 0.5; width: 40px;">&#9776;</button>
+                    <div id="tapearea2"></div>
+                </div>
+
+                <div id="ranktablearea" style="display: none;">
+                    <button onclick="gohome()" class="loginbutton" style="position: fixed; top: 0; left: 0; opacity: 0.5; width: 40px;">&#9776;</button>
+                </div>
+            </div>
+
+             <button id="logoutbutton" onclick="userlogout()" style="display: none" class="loginbutton">logout</button>
+
+            </div>
+        </div>
+        <script type="text/javascript">
+             // Initialize Firebase
+             var uid='';
+          var config = {
+            apiKey: "AIzaSyA6VGQRvcfJq0lU_YjULwa_M9UcMyS8rks",
+            authDomain: "letssavewater-f7563.firebaseapp.com",
+            databaseURL: "https://letssavewater-f7563.firebaseio.com",
+            projectId: "letssavewater-f7563",
+            storageBucket: "letssavewater-f7563.appspot.com",
+            messagingSenderId: "656680184952"
+          };
+          firebase.initializeApp(config);
+
+
+            var userdb = firebase.database().ref('users/');
+            var alldata;
+
+            userdb.on('value', function(snapshot){
+                var tempsnap = snapshot.val();
+                alldata = tempsnap;
+                // console.log(snapshot.val());
+                for (j in tempsnap){
+                    // console.log(tempsnap[j]);
+                }
+            });
+
+            function userlogin(){
+                var email = document.getElementById("inputuserid").value;
+                var password = document.getElementById("inputpw").value;
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  alert(errorMessage);
+                });
+            }
+
+            function userlogout(){
+                firebase.auth().signOut().then(function() {
+                  // Sign-out successful.
+                  document.getElementById("notificationbar").innerHTML = "Bye "+alldata[uid].username;
+                  // document.getElementById("notificationbar").style.opacity = 0.3;
+                  document.getElementById("notificationbar").style.display = "";
+                  setTimeout(unshownotibar, 3000);
+                  // alert('Bye');
+                }).catch(function(error) {
+                  // An error happened.
+                });
+            }
+
+            function unshownotibar(){
+                // document.getElementById("notificationbar").style.opacity = 0;
+                document.getElementById("notificationbar").style.display = "none";
+            }
+
+            function createback(){
+                // justcreated = 0;
+                document.getElementById("loginpage").style.display = "";
+                document.getElementById("createacarea").style.display = "none";
+            }
+
+            // var justcreated = 0;
+            function createnext(){
+                // justcreated = 1;
+                var email = document.getElementById("createuserid").value;
+                var password = document.getElementById("createpw").value;
+                var passwordretype =  document.getElementById("createpw2").value;
+                if (password==passwordretype){
+                    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                      // Handle Errors here.
+                      var errorCode = error.code;
+                      var errorMessage = error.message;
+                      alert(errorMessage);                  
+                    }).then(function(newuser){
+                        // console.log(newuser);
+                        uid = newuser.user.email;
+                        uid = uid.substring(0,uid.indexOf('@'))+uid.substring(uid.indexOf('@')+1,uid.indexOf('.'))+uid.substring(uid.indexOf('.')+1,uid.length);
+                        writeUser(uid, document.getElementById("createusername").value);
+                        document.getElementById("notificationbar").innerHTML = "Created! Welcome "+alldata[uid].username+".";
+                          // document.getElementById("notificationbar").style.opacity = 0.3;
+                          document.getElementById("notificationbar").style.display = "";
+                          setTimeout(unshownotibar, 3000);
+                        // alert('Created! Welcome.');
+                        document.getElementById("loginpage").style.display = "none";
+                        // document.getElementById("logoutbutton").style.display = "";
+                        document.getElementById("createacarea").style.display = "none";
+                        document.getElementById("startwatertapearea").style.display = "";
+                    });
+                } else {
+                    alert("Your passwords do not match, please try again.")
+                }
+            }
+
+            
+            function createnewac(){
+                document.getElementById("loginpage").style.display = "none";
+                document.getElementById("createacarea").style.display = "";
+                
+            }
+
+            function startinputmanually(){
+                document.getElementById("datainputchoose").style.display = "none";
+                document.getElementById("datainputmain").style.display = "";
+                document.getElementById("back").style.display = "";
+                if (document.getElementById("tapeinfo1")){
+                    document.getElementById("next").style.display = "";
+                }
+                // document.getElementById("inputtips").style.display = "";
+            }
+
+            var tiplocation;
+            function showtips(x){
+                tiplocation = x;
+                document.getElementById("inputtips").style.display = "";
+                document.getElementById("datainputmain").style.display = "none";
+            }
+
+            function addnewtape(){
+                var temptapnum = 1;
+                while (document.getElementById("tapeinfo"+temptapnum)){
+                    temptapnum++;
+                }
+                var newdiv = document.createElement("div");
+                newdiv.classList.add("logintag");
+                newdiv.style.marginBottom = "30px";
+                newdiv.id = "tapeinfo"+temptapnum;
+                newdiv.innerHTML = document.getElementById('tempaddtape').innerHTML;
+                document.getElementById("tapearea").appendChild(newdiv);
+                if (temptapnum==1){
+                    document.getElementById("tapeinfo1").childNodes[15].style.display = "none";
+                }
+                // document.getElementById("tapearea").appendChild(document.createElement('br'));
+                // document.getElementById("tapearea").innerHTML+='<div class="logintag" style="" id="tapeinfo'+temptapnum+'">'+document.getElementById('tempaddtape').innerHTML+'</div><br>';
+                document.getElementById("next").style.display = "";
+                document.getElementById("addtapedonebutton").style.display = "";
+            }
+
+            function deletetape(x){
+                x.parentNode.style.display = "none"
+            }
+
+            function backpage(){
+                if (document.getElementById("datainputmain").style.display!="none"){
+                    document.getElementById("back").style.display = "none";
+                    document.getElementById("next").style.display = "none";
+                    document.getElementById("datainputchoose").style.display = "";
+                    document.getElementById("datainputmain").style.display = "none";
+                } else if (document.getElementById("inputtips").style.display!="none"){
+                    document.getElementById("datainputmain").style.display = "";
+                    document.getElementById("inputtips").style.display = "none";
+                } else if (document.getElementById("calculationarea").style.display!="none"){
+                    document.getElementById("inputtips").style.display = "";
+                    document.getElementById("calculationarea").style.display = "none";
+                    document.getElementById("next").style.display = "";
+                }
+            }
+
+            function nextpage(){
+                if (document.getElementById("datainputmain").style.display!="none"){
+                    var noempty = 1;
+                    var temptapnum = 1;
+                    while (document.getElementById("tapeinfo"+temptapnum)){
+                        // console.log (document.getElementById("tapeinfo"+temptapnum).childNodes[1].value+' '+document.getElementById("tapeinfo"+temptapnum).childNodes[6].value);
+                        if ((document.getElementById("tapeinfo"+temptapnum).childNodes[1].value==''||document.getElementById("tapeinfo"+temptapnum).childNodes[6].value=='')&&document.getElementById("tapeinfo"+temptapnum).style.display!="none"){
+                            noempty = 0;
+                        }
+                        temptapnum++;
+                    }
+                    if (noempty){
+                        temptapnum = 1;
+                        while (document.getElementById("tapeinfo"+temptapnum)){
+                            // console.log (document.getElementById("tapeinfo"+temptapnum).childNodes[1].value+' '+document.getElementById("tapeinfo"+temptapnum).childNodes[6].value);
+                            if (document.getElementById("tapeinfo"+temptapnum).style.display!="none"){
+                                writeTape(uid,document.getElementById("tapeinfo"+temptapnum).childNodes[1].value,document.getElementById("tapeinfo"+temptapnum).childNodes[6].value);
+                            }
+                            temptapnum++;
+                        }
+                        document.getElementById("notificationbar").innerHTML = "done.";
+                        // document.getElementById("notificationbar").style.opacity = 0.3;
+                        document.getElementById("notificationbar").style.display = "";
+                        setTimeout(unshownotibar, 3000);
+                        document.getElementById("datainputmain").style.display = "none";
+                        document.getElementById("inputtips").style.display = "none";
+                        document.getElementById("back").style.display = "none";
+                        document.getElementById("next").style.display = "none";
+                        document.getElementById("appmain").style.display = "";
+                    } else {
+                        alert("Please fill in all the blanks");
+                    }
+                } else if (document.getElementById("inputtips").style.display!="none"){
+                    document.getElementById("calculationarea").style.display = "";
+                    document.getElementById("inputtips").style.display = "none";
+                    document.getElementById("next").style.display = "none";
+                }
+            }
+
+            function gohome(){
+                document.getElementById("myprofilearea").style.display = "none";
+                document.getElementById("myusagearea").style.display = "none";
+                document.getElementById("ranktablearea").style.display = "none";
+                document.getElementById("appmenu").style.display = "";
+            }
+
+            var timer = new Timer();
+            function starttimernow(){
+                // timer.reset();
+                timer.start({precision: 'secondTenths'});
+                timer.addEventListener('secondTenthsUpdated', function (e) {
+                    document.getElementById("timerarea").innerHTML = (timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
+                })
+            }
+
+            function stoptimernow(){
+                timer.stop();
+                var temptime = document.getElementById("timerarea").innerHTML;
+                document.getElementById("calctime").value = (Number(temptime[0])*10+Number(temptime[1]))*60*60+(Number(temptime[3])*10+Number(temptime[4]))*60+(Number(temptime[6])*10+Number(temptime[7]))+Number(temptime[9])/10;
+                // console.log((temptime[0]*10+temptime[1])*60*60+(temptime[3]*10+temptime[4])*60+(temptime[6]*10+temptime[7]));
+            }
+
+            function calculatespeed(){
+                if (document.getElementById("calctime").value==''||document.getElementById("calctime").value==0||document.getElementById("calcwater").value==''){
+                    alert("Please fill in all the blanks");
+                } else {
+                    // console.log(document.getElementById("calctime").value/document.getElementById("calctime").value*60/1000);
+                    tiplocation.parentNode.childNodes[6].value = Number(document.getElementById("calcwater").value)/Number(document.getElementById("calctime").value)*60/1000;
+                    document.getElementById("datainputmain").style.display = "";
+                    document.getElementById("calculationarea").style.display = "none";
+                    document.getElementById("next").style.display = "";
+                }
+            }
+
+            function startmyprofile(){
+                document.getElementById("appmenu").style.display = "none";
+                document.getElementById("myprofilearea").style.display = "";
+                document.getElementById("fillmyname").value = alldata[uid].username;
+                document.getElementById("fillmyemail").value = nowuser.email;
+            }
+
+            function startmyusage(){
+                document.getElementById("appmenu").style.display = "none";
+                document.getElementById("myusagearea").style.display = "";
+                document.getElementById("tapearea2").innerHTML = '';
+                for (j in alldata[uid].watertape){
+                    // console.log(j);
+                    document.getElementById("tapearea2").innerHTML += '<br><button onclick="showtapeusage('+"'"+j+"'"+')" class="loginbutton">'+j+'</button>';
+                }
+                
+            }
+
+            function showtapeusage(x) {
+                console.log(alldata[uid].watertape[x])
+            }
+
+            function startrankingtable(){
+                document.getElementById("appmenu").style.display = "none";
+                document.getElementById("ranktablearea").style.display = "";
+                
+            }
+
+
+
+            var nowuser;
+            firebase.auth().onAuthStateChanged(function(user){
+                
+                if (user){
+                    nowuser = user;
+                    uid = user.email;
+                    uid = uid.substring(0,uid.indexOf('@'))+uid.substring(uid.indexOf('@')+1,uid.indexOf('.'))+uid.substring(uid.indexOf('.')+1,uid.length);
+                    document.getElementById("loginpage").style.display = "none";
+                    // document.getElementById("logoutbutton").style.display = "";
+                    firebase.database().ref('users/').once('value', function(snapshot){
+                        var tempsnap = snapshot.val();
+                        alldata = tempsnap;
+                        // console.log(tempsnap);
+                        if (!tempsnap[uid].watertape){
+                            document.getElementById("startwatertapearea").style.display = "";
+                        } else {
+                            document.getElementById("appmain").style.display = "";
+                        }
+                        document.getElementById("notificationbar").innerHTML = "Welcome "+alldata[uid].username+".";
+                        // document.getElementById("notificationbar").style.opacity = 0.3;
+                        document.getElementById("notificationbar").style.display = "";
+                        setTimeout(unshownotibar, 3000);
+                    });                        
+                    
+                    // alert('Welcome');
+                } else {
+                    if (document.getElementById("createacarea").style.display=="none"){
+                        document.getElementById("back").style.display = "none";
+                        document.getElementById("next").style.display = "none";
+                        document.getElementById("logoutbutton").style.display = "none";
+                        document.getElementById("loginpage").style.display = "";
+                        document.getElementById("startwatertapearea").style.display = "none";
+                        document.getElementById("appmain").style.display = "none";
+                        document.getElementById("tapearea").innerHTML = "";
+                    }
+                }
+                
+                
+            });
+
+            function pad(num) {
+                var s = num+"";
+                if (s<10){
+                   s = "0" + s;
+                }
+                return s;
+            }
+
+            function f1(){
+                var currentdate = new Date(); 
+                var nowdate =  pad(currentdate.getFullYear())+"-"+pad(currentdate.getMonth()+1)+"-"+pad(currentdate.getDate()); 
+                var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
+                writeUser(prompt("Your userid"),prompt("Your name"), nowdate, nowtime, prompt("Your waterusage"));
+                alert('ok');
+            }
+
+            function writeUser(userId, name) {
+              firebase.database().ref('users/' + userId).set({
+                username: name,
+              });
+            }
+
+            function writeUsage(userId, nowdate, nowtime, tapename, usage) {
+              firebase.database().ref('users/' + userId + '/watertape/' + tapename + '/usage/').set({
+                date: nowdate,
+                time: nowtime,
+                tapename: tapename,
+                waterusage: usage
+              });
+            }
+
+            function writeTape(userId, tapename, tapespeed) {
+              firebase.database().ref('users/' + userId + '/watertape/' + tapename + '/').set({
+                tapename: tapename,
+                tapespeed: tapespeed
+              });
+            }
+
+        </script>
+        <!-- <script type="text/javascript" src="cordova.js"></script> -->
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
