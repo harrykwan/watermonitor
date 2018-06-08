@@ -197,6 +197,30 @@
             opacity: 0.3;
         }
 
+        #chartdiv {
+            background-color: lightblue; color: #fff;
+            border-radius: 20px;
+            width       : 350px;
+            height      : 300px;
+            font-size   : 12px;
+            border: 3px solid white;
+        }  
+
+        table, td{
+            border: 3px solid lightblue;
+            /*border-radius: 5px;*/
+        }
+
+        #calendar {
+            max-width: 300px;
+            margin: 0 auto;
+            font-size: 10px;
+        }
+
+        /*td{
+            width: 40%;
+        }*/
+
     </style>
     <head>
         <!--
@@ -222,7 +246,19 @@
         <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
         <!-- <script src="https://www.gstatic.com/firebasejs/live/3.1/firebase.js"></script> -->
         <script src="js/easytimer.min.js"></script>
-        
+
+        <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+        <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+        <script src="https://www.amcharts.com/lib/3/themes/black.js"></script>
+
+
+        <link href='full_source/fullcalendar.min.css' rel='stylesheet' />
+        <link href='full_source/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+        <script src='full_source/moment.min.js'></script>
+        <script src='full_source/jquery.min.js'></script>
+        <script src='full_source/fullcalendar.min.js'></script>
     </head>
 
     <body>
@@ -313,7 +349,7 @@
                     <input id="calcwater" type="text" class="logininput"> 
                     <br><br>
                     <button onclick="calculatespeed()" class="loginbutton">Calculate</button>
-                </div>
+                </div> 
              </div>
 
 
@@ -324,7 +360,7 @@
                 <br><br>
                 Water output speed (L/mins):
                 <input id="createusername" class="logininput" type="text">
-                <br> <i onclick="showtips(this)" style="font-size: 15px;">?? I don't know the speed</i>
+                <br> <i onclick="showtips(this)" style="font-size: 15px;"><u>?? I don't know the speed</u></i>
                 <br><br>
                 <button onclick="deletetape(this)" style="font-size: 10px; width: 30px; border-radius: 50px;" class="loginbutton">x</button>
             </div>
@@ -332,7 +368,7 @@
             <div id="appmain" style="display: none;">
                 
                 <div id="appmenu"style="text-align: center;">
-                <h1 style="text-align: center; font-size: 40px; text-shadow: 4px 4px grey;">Water Monitoring</h1>
+                <h1 style="text-align: center; font-size: 40px; text-shadow: 4px 4px grey;">LET'S SAVE WATER</h1>
                 <button id="button1" onclick="startmyprofile()" class="button">My Profile</button><br><br>
                 <button id="button2" onclick="startmyusage()" class="button">My Water Usage</button><br><br>
                 <button id="button3" onclick="startrankingtable()" class="button">Ranking Table</button><br><br>
@@ -357,19 +393,62 @@
 
                     <hr style="border-width: 10px 0 0 0;">
                     <hr style="border-width: 0 0 10px 0;"> -->
-
+                    <br><br>
+                    <div style="text-align: center;">Award:</div>
+                    <br><br>
+                    <div style="text-align: center;" id="profileawardarea"></div>
                     </div>
                 </div>
 
                 <div id="myusagearea" style="display: none;">
-                    <br>
-                    <h1 style="text-align: center;">Choose Shower Head</h1>
                     <button onclick="gohome()" class="loginbutton" style="position: fixed; top: 0; left: 0; opacity: 0.5; width: 40px;">&#9776;</button>
+
+                    <br>
+                    <div id="showerheadchoosearea">
+                    <h1 style="text-align: center;">Choose Shower Head</h1>
+                    
+                    <br>
                     <div id="tapearea2"></div>
+                    <button onclick="addnewtape2()" class="loginbutton" style="">+</button>
+                    </div>
+                    <div id="showtapearea" style="display: none;">
+                        <button onclick="usagegoback()" class="loginbutton" style="position: fixed; top: 0; left: 50px; opacity: 0.5; width: 40px;"><-</button>
+                        <h1 style="text-align: center;" id="tapetitle"></h1>
+                        <div class="logintag" style="width: 80%">
+                        Date:<br>
+                        <input id="tapedate" type="date" class="logininput"><br>
+                        Start Time:<br>
+                        <input id="tapestarttime" type="time" class="logininput"><br>
+                        <button onclick="timestartnow()" style="color: lightblue; border-width: 2px; background-color: #045FB4; border-radius: 10px; border-color: lightblue;"><i>start now</i></button><br><br>
+                        End Time:<br>
+                        <input id="tapeendtime" type="time" class="logininput"><br>
+                        <button onclick="timeendnow()" style="color: lightblue; border-width: 2px; background-color: #045FB4; border-radius: 10px; border-color: lightblue;"><i>end now</i></button><br><br>
+                        <button onclick="addwaterusage()" class="loginbutton">Add Water Usage</button>
+                        </div><br><br>
+                        <div id='calendar'></div><br><br>
+                        <div style="text-align: center;">Your Water Usage Trend:</div><br>
+                        <div id="chartdiv"></div><br><br>
+                        
+                    </div>
+                    </div>
                 </div>
 
                 <div id="ranktablearea" style="display: none;">
                     <button onclick="gohome()" class="loginbutton" style="position: fixed; top: 0; left: 0; opacity: 0.5; width: 40px;">&#9776;</button>
+                    <h1 style="text-align: center;">Water Usage Ranking</h1>
+                    <table align="center" id="rankingtable" style=""><tr><td class="ranktd"></td><td>Username</td><td>Average Usage (L)</td></tr></table>
+                    <br>
+                    <div style="">
+                    <div id="fillrank" style="text-align: center;"></div>
+                    <hr style='border-width: 0 0 10px 0;'><br>         
+                    <div style="width: 100%; text-align: center;" id="filltips"></div>
+                    </div><br>
+                    <hr style='border-width: 0 0 10px 0;'><br>      
+                    <button class="loginbutton" onclick="sharetofb()">Share to Facebook</button>
+                    <button class="loginbutton" onclick="sharetoother()">Share to other Social Media</button>
+                    <br><br><br><br><br><br><br><br>
+                    <br>
+                    <br>
                 </div>
             </div>
 
@@ -378,8 +457,9 @@
             </div>
         </div>
         <script type="text/javascript">
-             // Initialize Firebase
-             var uid='';
+
+        // Initialize Firebase
+          var uid='';
           var config = {
             apiKey: "AIzaSyA6VGQRvcfJq0lU_YjULwa_M9UcMyS8rks",
             authDomain: "letssavewater-f7563.firebaseapp.com",
@@ -390,7 +470,7 @@
           };
           firebase.initializeApp(config);
 
-
+//------------------------------------------------------------------------------
             var userdb = firebase.database().ref('users/');
             var alldata;
 
@@ -398,6 +478,16 @@
                 var tempsnap = snapshot.val();
                 alldata = tempsnap;
                 // console.log(snapshot.val());
+                if (nowuser){
+                    getrank();
+                    if (document.getElementById("showtapearea").style.display!="none"){
+                        writechart();
+                        // document.getElementById("calendar").innerHTML = '';
+                        writecalendar();
+                        // refreshcalendar();
+                    }
+                }
+                
                 for (j in tempsnap){
                     // console.log(tempsnap[j]);
                 }
@@ -415,16 +505,19 @@
             }
 
             function userlogout(){
-                firebase.auth().signOut().then(function() {
-                  // Sign-out successful.
-                  document.getElementById("notificationbar").innerHTML = "Bye "+alldata[uid].username;
-                  // document.getElementById("notificationbar").style.opacity = 0.3;
-                  document.getElementById("notificationbar").style.display = "";
-                  setTimeout(unshownotibar, 3000);
-                  // alert('Bye');
-                }).catch(function(error) {
-                  // An error happened.
-                });
+                if (confirm("Are you sure you want to logout?")){
+                    firebase.auth().signOut().then(function() {
+                      // Sign-out successful.
+                      document.getElementById("notificationbar").innerHTML = "Bye "+alldata[uid].username;
+                      // document.getElementById("notificationbar").style.opacity = 0.3;
+                      document.getElementById("notificationbar").style.display = "";
+                      setTimeout(unshownotibar, 3000);
+                      // alert('Bye');
+                    }).catch(function(error) {
+                      // An error happened.
+                    });
+                }
+                
             }
 
             function unshownotibar(){
@@ -444,30 +537,40 @@
                 var email = document.getElementById("createuserid").value;
                 var password = document.getElementById("createpw").value;
                 var passwordretype =  document.getElementById("createpw2").value;
-                if (password==passwordretype){
-                    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-                      // Handle Errors here.
-                      var errorCode = error.code;
-                      var errorMessage = error.message;
-                      alert(errorMessage);                  
-                    }).then(function(newuser){
-                        // console.log(newuser);
-                        uid = newuser.user.email;
-                        uid = uid.substring(0,uid.indexOf('@'))+uid.substring(uid.indexOf('@')+1,uid.indexOf('.'))+uid.substring(uid.indexOf('.')+1,uid.length);
-                        writeUser(uid, document.getElementById("createusername").value);
-                        document.getElementById("notificationbar").innerHTML = "Created! Welcome "+alldata[uid].username+".";
-                          // document.getElementById("notificationbar").style.opacity = 0.3;
-                          document.getElementById("notificationbar").style.display = "";
-                          setTimeout(unshownotibar, 3000);
-                        // alert('Created! Welcome.');
-                        document.getElementById("loginpage").style.display = "none";
-                        // document.getElementById("logoutbutton").style.display = "";
-                        document.getElementById("createacarea").style.display = "none";
-                        document.getElementById("startwatertapearea").style.display = "";
-                    });
-                } else {
-                    alert("Your passwords do not match, please try again.")
+                var usernameok = 1;
+                for (j in alldata){
+                    if (alldata[j].username==document.getElementById("createusername").value){
+                        alert("This username has been occupied. Please try another.");
+                        usernameok = 0;
+                    }
                 }
+                if (usernameok){
+                    if (password==passwordretype){
+                        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                          // Handle Errors here.
+                          var errorCode = error.code;
+                          var errorMessage = error.message;
+                          alert(errorMessage);                  
+                        }).then(function(newuser){
+                            // console.log(newuser);
+                            uid = newuser.user.email;
+                            uid = uid.substring(0,uid.indexOf('@'))+uid.substring(uid.indexOf('@')+1,uid.indexOf('.'))+uid.substring(uid.indexOf('.')+1,uid.length);
+                            writeUser(uid, document.getElementById("createusername").value);
+                            document.getElementById("notificationbar").innerHTML = "Created! Welcome "+alldata[uid].username+".";
+                              // document.getElementById("notificationbar").style.opacity = 0.3;
+                              document.getElementById("notificationbar").style.display = "";
+                              setTimeout(unshownotibar, 3000);
+                            // alert('Created! Welcome.');
+                            document.getElementById("loginpage").style.display = "none";
+                            // document.getElementById("logoutbutton").style.display = "";
+                            document.getElementById("createacarea").style.display = "none";
+                            document.getElementById("startwatertapearea").style.display = "";
+                        });
+                    } else {
+                        alert("Your passwords do not match, please try again.")
+                    }
+                }
+                
             }
 
             
@@ -516,6 +619,11 @@
 
             function deletetape(x){
                 x.parentNode.style.display = "none"
+            }
+
+            function usagegoback() {
+                document.getElementById("showtapearea").style.display = "none";
+                document.getElementById("showerheadchoosearea").style.display = "";
             }
 
             function backpage(){
@@ -592,7 +700,7 @@
             function stoptimernow(){
                 timer.stop();
                 var temptime = document.getElementById("timerarea").innerHTML;
-                document.getElementById("calctime").value = (Number(temptime[0])*10+Number(temptime[1]))*60*60+(Number(temptime[3])*10+Number(temptime[4]))*60+(Number(temptime[6])*10+Number(temptime[7]))+Number(temptime[9])/10;
+                document.getElementById("calctime").value = (Number(temptime[0])*10+Number(temptime[1]))*60*60+(Number(temptime[3])*10+Number(temptime[4]))*60+(Number(temptime[6])*10+Number(temptime[7]))+Number(temptime[9])/6;
                 // console.log((temptime[0]*10+temptime[1])*60*60+(temptime[3]*10+temptime[4])*60+(temptime[6]*10+temptime[7]));
             }
 
@@ -613,6 +721,92 @@
                 document.getElementById("myprofilearea").style.display = "";
                 document.getElementById("fillmyname").value = alldata[uid].username;
                 document.getElementById("fillmyemail").value = nowuser.email;
+                getrank();
+                document.getElementById("profileawardarea").innerHTML = '';
+                if (document.getElementById("rankimg")){
+                    var temprankimg = document.createElement("img");
+                    temprankimg.src = document.getElementById("rankimg").src;
+                    temprankimg.style.height = document.getElementById("rankimg").style.height;
+                    temprankimg.style.width = document.getElementById("rankimg").style.width;
+                    temprankimg.id = "profilerankimg";
+                    document.getElementById("profileawardarea").appendChild(temprankimg);
+                }
+                if (document.getElementById("improveimg")){
+                    var tempimproveimg = document.createElement("img");
+                    tempimproveimg.src = document.getElementById("improveimg").src;
+                    tempimproveimg.style.height = document.getElementById("improveimg").style.height;
+                    tempimproveimg.style.width = document.getElementById("improveimg").style.width;
+                    tempimproveimg.id = "profileimproveimg";
+                    document.getElementById("profileawardarea").appendChild(tempimproveimg);
+                } else {
+                    
+                }
+            }
+
+            function generatetips(){
+                var tipsarray = ["Take shower instead of bath",
+                "Use showerhead rated Grade 1 in the Water Efficiency Labelling Scheme",
+                "Wait until you have a full load for doing laundry",
+                "Choose a washing machine with adjustable water level",
+                "Use water smart appliances such as water saving faucets, dual-flush cisterns, etc.",
+                "Do not run water non-stop when brushing teeth, washing hands or shaving",
+                "Close faucets properly and repair immediately if they become loose",
+                "Properly maintain water pipes, toilet and tanks to prevent water leakage",
+                // "Washing machine will discharge water two to three times when doing laundry. Wastewater discharged later in the cycle contains few pollutants, and can be used for floor and household cleaning",
+                "Wastewater discharged form the washing machine can be used for floor and household cleaning",
+                "If freshwater is used for toilet flushing, retain wastewater after shower or laundry for such use",
+                "Water used for washing vegetables, keeping fish or preparing rice can be used to water pot plants"];
+                var rannum = Math.floor(Math.random()*tipsarray.length);
+                return tipsarray[rannum]+', can help saving water.';
+            }
+            // console.log(generatetips());
+
+            function generateChartData() {
+                var chartData = [];
+                var tempusagedata = alldata[uid].watertape[document.getElementById("tapetitle").innerHTML].usage;
+                for (j in tempusagedata){
+                    var tempdate = new Date(j);
+                    // console.log(tempdate);
+                    // console.log(tempusagedata[j].waterusage);
+                   chartData.push({
+                        date: tempdate,
+                        usage: tempusagedata[j].waterusage,
+                        meanusage: 55.2
+                    });
+                }
+                // current date
+                // var firstDate = new Date();
+                // // now set 500 minutes back
+                // firstDate.setMinutes(firstDate.getDate() - 1000);
+
+                // // and generate 500 data items
+                // var visits = 500;
+                // for (var i = 0; i < 500; i++) {
+                //     var newDate = new Date(firstDate);
+                //     // each time we add one minute
+                //     newDate.setMinutes(newDate.getMinutes() + i);
+                //     // some random number
+                //     visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+                //     // add data item to the array
+                //     if (i==0||i==5||i==100||i==500){
+                //          console.log(newDate);
+                //     }
+                    
+                // }
+                return chartData;
+            }
+
+            function generatecalendadata(){
+                var calendaData = [];
+                var tempusagedata = alldata[uid].watertape[document.getElementById("tapetitle").innerHTML].usage;
+                for (j in tempusagedata){
+                   calendaData.push({
+                        title: document.getElementById("tapetitle").innerHTML+' '+j.substring(11,j.length)+'-'+tempusagedata[j].endtime.substring(11,j.length),
+                        start: j,
+                        end: tempusagedata[j].endtime
+                    });
+                }
+                return calendaData;
             }
 
             function startmyusage(){
@@ -621,28 +815,353 @@
                 document.getElementById("tapearea2").innerHTML = '';
                 for (j in alldata[uid].watertape){
                     // console.log(j);
-                    document.getElementById("tapearea2").innerHTML += '<br><button onclick="showtapeusage('+"'"+j+"'"+')" class="loginbutton">'+j+'</button>';
+                    document.getElementById("tapearea2").innerHTML += '<button onclick="showtapeusage('+"'"+j+"'"+')" class="loginbutton">'+j+'</button><br><br>';
                 }
                 
             }
 
-            function showtapeusage(x) {
-                console.log(alldata[uid].watertape[x])
+            function timestartnow(){
+                var currentdate = new Date(); 
+                var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
+                document.getElementById("tapestarttime").value = nowtime;
             }
 
+            function timeendnow() {
+                var currentdate = new Date(); 
+                var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
+                document.getElementById("tapeendtime").value = nowtime;
+            }
+
+            function showtapeusage(x) {
+                // console.log(alldata[uid].watertape[x]);
+                document.getElementById("showerheadchoosearea").style.display = "none";
+                document.getElementById("showtapearea").style.display = "";
+                document.getElementById("tapetitle").innerHTML = x;
+                var currentdate = new Date(); 
+                var nowdate =  pad(currentdate.getFullYear())+"-"+pad(currentdate.getMonth()+1)+"-"+pad(currentdate.getDate()); 
+                var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
+                document.getElementById("tapedate").value = nowdate;
+                document.getElementById("tapestarttime").value = nowtime;
+                document.getElementById("tapeendtime").value = nowtime;
+                writechart();
+                writecalendar();
+            }
+
+            function writechart() {
+                var chartData = generateChartData();
+
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "type": "serial",
+                    "theme": "light",
+                    "marginRight": 80,
+                    "dataProvider": chartData,
+                    "valueAxes": [{
+                        "position": "left",
+                        "title": "Water Usage (L)"
+                    }],
+                    "graphs": [{
+                        "id": "g1",
+                        "fillAlphas": 0.4,
+                        "valueField": "usage",
+                         "balloonText": "<div style='margin:5px; font-size:19px;'>Water usage(L):<b>[[value]]</b></div>"
+                    },{
+                        "id": "g2",
+                        "fillAlphas": 0.4,
+                        "valueField": "meanusage",
+                         "balloonText": "<div style='margin:5px; font-size:19px;'>WSD average usage(L):<b>[[value]]</b></div>"
+                    }],
+                    "chartScrollbar": {
+                        "graph": "g1",
+                        "scrollbarHeight": 80,
+                        "backgroundAlpha": 0,
+                        "selectedBackgroundAlpha": 0.1,
+                        "selectedBackgroundColor": "#888888",
+                        "graphFillAlpha": 0,
+                        "graphLineAlpha": 0.5,
+                        "selectedGraphFillAlpha": 0,
+                        "selectedGraphLineAlpha": 1,
+                        "autoGridCount": true,
+                        "color": "#AAAAAA"
+                    },
+                    "chartCursor": {
+                        "categoryBalloonDateFormat": "JJ:NN, DD MMMM",
+                        "cursorPosition": "mouse"
+                    },
+                    "categoryField": "date",
+                    "categoryAxis": {
+                        "minPeriod": "mm",
+                        "parseDates": true
+                    },
+                    "export": {
+                        "enabled": false,
+                         "dateFormat": "YYYY-MM-DD HH:NN:SS"
+                    }
+                });
+            }
+
+            // function refreshcalendar(){
+            //     var currentdate = new Date(); 
+            //     var nowdate =  pad(currentdate.getFullYear())+"-"+pad(currentdate.getMonth()+1)+"-"+pad(currentdate.getDate()); 
+            //     var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
+            //     var calendaData = generatecalendadata();
+            //     // console.log(calendaData);
+            //         // $('#calendar').fullCalendar({
+            //         //   defaultDate: nowdate,
+            //         //   events: calendaData
+            //         // });
+            //     $('#calendar').fullCalendar('removeEventSource', calendaData);
+            //     $('#calendar').fullCalendar('addEventSource', calendaData);
+            //     $('#calendar').fullCalendar('refetchEvents');
+            // }
+
+            var calendaData = [];
+            function writecalendar(){
+                $('#calendar').fullCalendar('removeEventSource', calendaData);
+                // $('#calendar').fullCalendar('refetchEvents', calendaData);
+                calendaData = generatecalendadata();
+                $('#calendar').fullCalendar('addEventSource', calendaData);
+                $('#calendar').fullCalendar('refetchEvents', calendaData);
+            }
+            
+            $(document).ready(function() {
+                var currentdate = new Date(); 
+                var nowdate =  pad(currentdate.getFullYear())+"-"+pad(currentdate.getMonth()+1)+"-"+pad(currentdate.getDate()); 
+                var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
+                    $('#calendar').fullCalendar({
+                      header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay,listWeek'
+                      },
+                      defaultDate: nowdate,
+                      navLinks: true, // can click day/week names to navigate views
+                      editable: false,
+                      eventLimit: true, // allow "more" link when too many events
+                      events: []
+                    });
+                });
+
+
+            function addwaterusage(){
+                var temptime2 = document.getElementById("tapestarttime").value+':00';
+                var temptime = document.getElementById("tapeendtime").value+':00';
+                var tempusage = ((Number(temptime[0])-Number(temptime2[0]))*10+(Number(temptime[1])-Number(temptime2[1])))*60*60+((Number(temptime[3])-Number(temptime2[3]))*10+(Number(temptime[4])-Number(temptime2[4])))*60+((Number(temptime[6])-Number(temptime2[6]))*10+(Number(temptime[7])-Number(temptime2[7])));
+                // console.log(tempusage);
+                if ((Number(temptime2.substring(0,2))>12&&Number(temptime.substring(0,2))<12)){
+                    tempusage+=24*60*60;
+                }
+                // console.log(tempusage);
+                tempusage = tempusage*alldata[uid].watertape[document.getElementById("tapetitle").innerHTML].tapespeed/60;
+                // console.log(tempusage);
+                if (tempusage>0){
+                    writeUsage(uid,document.getElementById("tapetitle").innerHTML,document.getElementById("tapedate").value,document.getElementById("tapestarttime").value,document.getElementById("tapeendtime").value,tempusage);
+                    document.getElementById("notificationbar").innerHTML = "Done. "+generatetips();
+                    document.getElementById("notificationbar").style.display = "";
+                    setTimeout(unshownotibar, 3000);
+                    // writechart();
+                    // writecalendar();
+                } else {
+                    alert("Error. End time should > Start time.")
+                }
+                
+            }
+
+            
             function startrankingtable(){
                 document.getElementById("appmenu").style.display = "none";
                 document.getElementById("ranktablearea").style.display = "";
+                getrank();
+            }
+
+            var myrank = 0;
+            var myaverage = 0;
+            var thismonthsum = 0;
+            var thismonthct = 0;
+            var previousmonthsum = 0;
+            var previousmonthct = 0;
+            var mypng = '';
+            var mypng2 = '';
+
+            function getrank(){
+                myrank = 0;
+                myaverage = 0;
+                thismonthsum = 0;
+                thismonthct = 0;
+                previousmonthsum = 0;
+                previousmonthct = 0;
+                var currentdate = new Date(); 
+                var nowmonth =  currentdate.getMonth()+1;
+                document.getElementById("rankingtable").innerHTML = "<tr><td style='width: 10%;'></td><td style='background-color:lightblue; color: #084B8A; width: 40%;'><b>Username</b></td><td style='background-color:lightblue; color: #084B8A; width: 40%;'><b>Average Usage (L)</b></td></tr>";
+                var tempct = 0;
+                var tempsum = 0;
+                var allct = 0;
+                var allsum = 0;
+                myaverage = 0;
+                for (j in alldata){
+                    tempct = 0;
+                    tempsum = 0;
+                    // console.log(alldata[j].username);
+                    for (k in alldata[j].watertape){
+                        for (jj in alldata[j].watertape[k].usage){
+                            tempct++;
+                            tempsum+=Number(alldata[j].watertape[k].usage[jj].waterusage);
+                            // console.log(tempct);
+                            // console.log(tempsum);
+                            // console.log(alldata[j].watertape[k].usage[jj]);
+                            if (j==uid){
+                                if (jj.substring(5,7)==nowmonth){
+                                    thismonthct++;
+                                    thismonthsum+=Number(alldata[j].watertape[k].usage[jj].waterusage);
+                                } else if (jj.substring(5,7)==nowmonth-1){
+                                    previousmonthct++;
+                                    previousmonthsum+=Number(alldata[j].watertape[k].usage[jj].waterusage);
+                                }
+                            }
+                        }
+                    }
+                    // console.log(tempsum/tempct);
+                    var table = document.getElementById("rankingtable");
+                    var row = table.insertRow(table.rows.length);
+                    var cell0 = row.insertCell(0);
+                    var cell1 = row.insertCell(1);
+                    var cell2 = row.insertCell(2);
+                    cell1.innerHTML = alldata[j].username;
+                    cell2.innerHTML = tempsum/tempct;
+                    if (tempct>0){
+                        allct++;
+                        allsum+=tempsum/tempct;
+                    }
+                    
+                    if (j==uid){
+                        myaverage = tempsum/tempct;
+                    }
+                }
+
+                // console.log(thismonthsum/thismonthct);
+                // console.log(previousmonthsum/previousmonthct);
+
+                for (var j=1; j<document.getElementById("rankingtable").rows.length; j++){
+                    for (var k=j+1; k<document.getElementById("rankingtable").rows.length; k++){
+                        if (Number(document.getElementById("rankingtable").rows[j].cells[2].innerHTML)>Number(document.getElementById("rankingtable").rows[k].cells[2].innerHTML)&&document.getElementById("rankingtable").rows[k].cells[2].innerHTML!='NaN'||document.getElementById("rankingtable").rows[k].cells[2].innerHTML!='NaN'&&document.getElementById("rankingtable").rows[j].cells[2].innerHTML=='NaN'){
+                            var tempsawp = document.getElementById("rankingtable").rows[j].cells[2].innerHTML;
+                            document.getElementById("rankingtable").rows[j].cells[2].innerHTML = document.getElementById("rankingtable").rows[k].cells[2].innerHTML;
+                            document.getElementById("rankingtable").rows[k].cells[2].innerHTML = tempsawp;
+                            tempsawp = document.getElementById("rankingtable").rows[j].cells[1].innerHTML;
+                            document.getElementById("rankingtable").rows[j].cells[1].innerHTML = document.getElementById("rankingtable").rows[k].cells[1].innerHTML;
+                            document.getElementById("rankingtable").rows[k].cells[1].innerHTML = tempsawp;
+                        }
+                    }
+                }
+
+                for (var j=1; j<document.getElementById("rankingtable").rows.length; j++){
+                    if (document.getElementById("rankingtable").rows[j].cells[1].innerHTML==alldata[uid].username){
+                        // console.log(j);
+                        document.getElementById("fillrank").innerHTML = "Rank "+j+".";
+                        myrank = j;
+                        if (j==1){
+                            document.getElementById("fillrank").innerHTML += "<br><br><img id='rankimg' src='img/Gold.png' style='height:100px; width: 50px;'>";
+                            mypng = "www/img/Gold.png";
+                        } else if (j==2){
+                            document.getElementById("fillrank").innerHTML += "<br><br><img id='rankimg' src='img/Silver.png' style='height:100px; width: 50px;'>";
+                            mypng = "www/img/Silver.png";
+                        } else if (j==3){
+                            document.getElementById("fillrank").innerHTML += "<br><br><img id='rankimg' src='img/Chrome.png' style='height:100px; width: 50px;'>";
+                            mypng = "www/img/Chrome.png";
+                        } else {
+                            mypng = "";
+                        }
+                    }
+                    document.getElementById("rankingtable").rows[j].cells[0].innerHTML = j;
+                }
+
+                var monthaveragetext = "Your Average Usage this month is <i><b>"+thismonthsum/thismonthct+"</b></i><br><br>Your Average Usage last month is <i><b>"+previousmonthsum/previousmonthct+"</b></i><br>";
+                if (previousmonthct>0&&thismonthct>0){
+                    if (thismonthsum/thismonthct<previousmonthsum/previousmonthct){
+                        monthaveragetext+="<br><b style='color: lightgreen;'>Improved "+(previousmonthsum/previousmonthct-thismonthsum/thismonthct)+"L</b>";
+                        if ((previousmonthsum/previousmonthct-thismonthsum/thismonthct)>10){
+                            monthaveragetext+="<br><br><div style='text-align: center;'><img id='improveimg' src='img/hand-with-drop.png' style='height:100px; width: 80px;'><br>The Water Saver</div>";
+                            mypng2 = 'www/img/hand-with-drop.png';
+                        } else {
+                            mypng2 = '';
+                        }
+                    } else {
+                        monthaveragetext+="<br><b style='color: red;'>Degenerated "+(previousmonthsum/previousmonthct-thismonthsum/thismonthct)+"L</b>";
+                    }
+                }
+                
+                // console.log(monthaveragetext);
+                // document.getElementById("filltips").innerHTML+="<hr style='border-width: 0 0 10px 0;'>";
+
+                if (allsum/allct<myaverage){
+                    document.getElementById("filltips").innerHTML = monthaveragetext+"<hr style='border-width: 0 0 10px 0;'><br><br>The <i><b>Mean</b></i> of all users is <i><b>"+(allsum/allct)+"L</b></i> (<b style='color: red;'>"+(allsum/allct-myaverage)+"L</b>). "+"<br><br>There is still room for improvement.";
+                    
+                } else {
+                    document.getElementById("filltips").innerHTML = monthaveragetext+"<hr style='border-width: 0 0 10px 0;'><br><br>The <i><b>Mean</b></i> of all users is <i><b>"+(allsum/allct)+"L</b></i> (<b style='color: lightgreen;'>+"+(allsum/allct-myaverage)+"L</b>). <br><br>It seems that you already have good control of water usage. Keep it on!";
+                }
+                document.getElementById("filltips").innerHTML += " <br><br>Let me give you some tips: <br><br>" + "<i><b><u>"+generatetips()+"</b></i></u>";
+                if (document.getElementById("rankingtable").rows[myrank].cells[2].innerHTML=='NaN'){
+                    document.getElementById("fillrank").innerHTML = "NO DATA for analysis";
+                    document.getElementById("filltips").innerHTML = "";
+                }
+            }
+
+
+            function sharetofb() {
+                // alert(document.getElementById("rankimg").src);
+                // window.plugins.socialsharing.share('Message and image', 'subject', 'https://www.google.nl/images/srpr/logo4w.png', null);
+                // window.plugins.socialsharing.share('Message only https://www.google.nl/images/srpr/logo4w.png')
+                // window.plugins.socialsharing.share('I got rank '+myrank+" in the WSD saving water acitivity. Let's try this out. https://drive.google.com/open?id=1Zu6AwJ_h8hN_JDj4gfR0-n89uMJM_b08 ", null);//, mypng);
+                var imgshare = [];
+                if (mypng!=''){
+                    imgshare.push(mypng);
+                }
+                if (mypng2!=''){
+                    imgshare.push(mypng2);
+                }
+                // console.log(imgshare);
+                window.plugins.socialsharing.shareViaFacebookWithPasteMessageHint('I got rank '+myrank+" in the WSD saving water acitivity. Let's try this out. https://drive.google.com/open?id=1Zu6AwJ_h8hN_JDj4gfR0-n89uMJM_b08 ", imgshare /* img */, null /* url */, 'Paste the message :)', function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+
+            }
+
+            function sharetoother() {
+                // alert(document.getElementById("rankimg").src);
+                
+                // window.plugins.socialsharing.share('Message only https://www.google.nl/images/srpr/logo4w.png')
+                // window.plugins.socialsharing.share('I got rank '+myrank+" in the WSD saving water acitivity. Let's try this out. https://drive.google.com/open?id=1Zu6AwJ_h8hN_JDj4gfR0-n89uMJM_b08 ", null);//, mypng);
+                var imgshare = [];
+                if (mypng!=''){
+                    imgshare.push(mypng);
+                }
+                if (mypng2!=''){
+                    imgshare.push(mypng2);
+                }
+                // console.log(imgshare);
+                cordova.plugins.clipboard.copy('I got rank '+myrank+" in the WSD saving water acitivity. Let's try this out. https://drive.google.com/open?id=1Zu6AwJ_h8hN_JDj4gfR0-n89uMJM_b08 ");
+                window.plugins.socialsharing.share('I got rank '+myrank+" in the WSD saving water acitivity. Let's try this out. https://drive.google.com/open?id=1Zu6AwJ_h8hN_JDj4gfR0-n89uMJM_b08 ", 'subject', imgshare, null);
+                // window.plugins.socialsharing.shareViaInstagram(, imgshare /* img */, null /* url */, /*'Paste the message :)', */ function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+
+            }
+
+
+            function addnewtape2(){
+                var tempheadname = prompt("PLease the shower head name (do not repeat)");
+                if (tempheadname&&tempheadname!=''){
+                    var tempwaterspeed = prompt("Please the shower head name (L/mins)");
+                    if (tempwaterspeed&&tempwaterspeed!=''){
+                        writeTape(uid,tempheadname,tempwaterspeed);
+                        document.getElementById("tapearea2").innerHTML += '<button onclick="showtapeusage('+"'"+tempheadname+"'"+')" class="loginbutton">'+tempheadname+'</button><br><br>';
+                    }
+                }
                 
             }
 
 
-
             var nowuser;
+
             firebase.auth().onAuthStateChanged(function(user){
-                
                 if (user){
                     nowuser = user;
+                    // console.log(nowuser);
                     uid = user.email;
                     uid = uid.substring(0,uid.indexOf('@'))+uid.substring(uid.indexOf('@')+1,uid.indexOf('.'))+uid.substring(uid.indexOf('.')+1,uid.length);
                     document.getElementById("loginpage").style.display = "none";
@@ -656,14 +1175,16 @@
                         } else {
                             document.getElementById("appmain").style.display = "";
                         }
-                        document.getElementById("notificationbar").innerHTML = "Welcome "+alldata[uid].username+".";
+                        document.getElementById("notificationbar").innerHTML = "Welcome "+alldata[uid].username+". "+generatetips();
                         // document.getElementById("notificationbar").style.opacity = 0.3;
                         document.getElementById("notificationbar").style.display = "";
-                        setTimeout(unshownotibar, 3000);
+                        setTimeout(unshownotibar, 5000);
                     });                        
                     
                     // alert('Welcome');
                 } else {
+                    nowuser = undefined;
+                    // console.log(nowuser);
                     if (document.getElementById("createacarea").style.display=="none"){
                         document.getElementById("back").style.display = "none";
                         document.getElementById("next").style.display = "none";
@@ -686,25 +1207,17 @@
                 return s;
             }
 
-            function f1(){
-                var currentdate = new Date(); 
-                var nowdate =  pad(currentdate.getFullYear())+"-"+pad(currentdate.getMonth()+1)+"-"+pad(currentdate.getDate()); 
-                var nowtime =  pad(currentdate.getHours())+":"+pad(currentdate.getMinutes())+":"+pad(currentdate.getSeconds());
-                writeUser(prompt("Your userid"),prompt("Your name"), nowdate, nowtime, prompt("Your waterusage"));
-                alert('ok');
-            }
-
             function writeUser(userId, name) {
               firebase.database().ref('users/' + userId).set({
                 username: name,
               });
             }
 
-            function writeUsage(userId, nowdate, nowtime, tapename, usage) {
-              firebase.database().ref('users/' + userId + '/watertape/' + tapename + '/usage/').set({
-                date: nowdate,
-                time: nowtime,
-                tapename: tapename,
+            function writeUsage(userId, tapename, nowdate, nowtime, endtime, usage) {
+              firebase.database().ref('users/' + userId + '/watertape/' + tapename + '/usage/' + nowdate + ' ' + nowtime + '/').set({
+                // date: nowdate,
+                // time: nowtime,
+                endtime: nowdate + ' ' + endtime,
                 waterusage: usage
               });
             }
@@ -717,7 +1230,7 @@
             }
 
         </script>
-        <!-- <script type="text/javascript" src="cordova.js"></script> -->
+        <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
